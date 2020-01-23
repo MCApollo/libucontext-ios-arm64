@@ -1,10 +1,16 @@
 #ifndef UCONTEXT_H
 #define UCONTEXT_H	1
 
+#define _GCC 1
+
 #ifndef _GCC /* Apple stack_t, sigset_t */
 #include <sys/_types/_sigset_t.h>
 #include <sys/_types/_sigaltstack.h>
 #else
+#define _STRUCT_UCONTEXT 1
+#define __ARM_MCONTEXT_H_ 1
+#define _SIGSET_T 1
+#define _STRUCT_SIGALTSTACK struct sigaltstack
 #include <sys/cdefs.h>
 typedef struct
   {
@@ -15,15 +21,7 @@ typedef struct
 
 typedef unsigned long int __sigset_t;
 typedef __sigset_t sigset_t;
-typedef unsigned long int __sigset_t;
 #endif
-
-extern int getcontext (ucontext_t *__ucp);
-extern int setcontext (const ucontext_t *__ucp);
-extern int swapcontext (ucontext_t *__restrict __oucp,
-			const ucontext_t *__restrict __ucp);
-extern void makecontext (ucontext_t *__ucp, void (*__func) (void),
-			 int __argc, ...);
 
 typedef struct
   {
@@ -43,5 +41,12 @@ typedef struct ucontext_t
     sigset_t uc_sigmask;
     mcontext_t uc_mcontext;
   } ucontext_t;
+
+extern int getcontext (ucontext_t *__ucp);
+extern int setcontext (const ucontext_t *__ucp);
+extern int swapcontext (ucontext_t *__restrict __oucp,
+			const ucontext_t *__restrict __ucp);
+extern void makecontext (ucontext_t *__ucp, void (*__func) (void),
+			 int __argc, ...);
 
 #endif

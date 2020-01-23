@@ -102,7 +102,7 @@ ___start_context:
 	cbnz	x0, ___setcontext
 
 	/* something went wrong, exit */
-	b	exit
+	b	_exit
 
 
 .globl ___swapcontext;

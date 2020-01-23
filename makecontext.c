@@ -13,12 +13,12 @@
 #define _GNU_SOURCE
 #include <stddef.h>
 #include <stdarg.h>
-#include <signal.h>
 #include <string.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "defs.h"
 
+#include "defs.h"
+#include <ucontext.h>
 
 extern void __start_context(void);
 
@@ -54,4 +54,6 @@ __makecontext(ucontext_t *ucp, void (*func)(void), int argc, ...)
 }
 
 
-extern __typeof(__makecontext) makecontext __attribute__((weak, __alias__("__makecontext")));
+extern __typeof(__makecontext) makecontext; \
+    __asm__(".globl _makecontext"); \
+    __asm__(".set _makecontext, ___makecontext");

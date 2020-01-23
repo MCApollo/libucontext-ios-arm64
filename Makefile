@@ -1,6 +1,6 @@
 CC := aarch64-apple-darwin17-clang
 AR := aarch64-apple-darwin17-ar
-CFLAGS = -ggdb3 -O2 -Wall -I. -I./include
+CFLAGS = -ggdb3 -O2 -Wall -isystem . -I./include
 
 LIBUCONTEXT_C_SRC = $(wildcard ./*.c)
 LIBUCONTEXT_S_SRC = $(wildcard ./*.S)
@@ -23,10 +23,13 @@ ${LIBUCONTEXT_STATIC_NAME}: ${LIBUCONTEXT_OBJ}
 clean:
 	rm -f ${LIBUCONTEXT_NAME} ${LIBUCONTEXT_SONAME} ${LIBUCONTEXT_STATIC_NAME} \
 		${LIBUCONTEXT_OBJ} test_libucontext
+	rm -rf test_libucontext.dSYM
 
 install: all
 	install -D -m664 ${LIBUCONTEXT_STATIC_NAME} ${DESTDIR}/${PREFIX}/lib
 	install -D -m664 ucontext.h ${DESTDIR}/${PREFIX}/include
 
-test_libucontext: test_libucontext.c ${LIBUCONTEXT_NAME}
-	$(CC) -std=c99 -D_BSD_SOURCE ${CFLAGS} ${CPPFLAGS} $@.c -o $@ -L. -lucontext
+test_libucontext: test/test_libucontext.c ${LIBUCONTEXT_STATIC_NAME}
+	$(CC) -std=c99 -D_BSD_SOURCE ${CFLAGS} ${CPPFLAGS} test/$@.c -o $@ -L. -lucontext
+
+test: test_libucontext
