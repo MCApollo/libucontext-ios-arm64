@@ -12,6 +12,8 @@
 
 #include "defs.h"
 
+.align 4
+
 .globl ___getcontext;
 ___getcontext:
 	str	xzr, [x0, #R0_OFFSET + (0 * REGSZ)]
@@ -99,7 +101,7 @@ _setcontext = ___setcontext;
 ___start_context:
 	/* get the proper context into position and test for NULL */
 	mov	x0, x19
-	cbnz	x0, ___setcontext
+	cbnz	x0, _setcontext
 
 	/* something went wrong, exit */
 	b	_exit
@@ -142,7 +144,7 @@ ___swapcontext:
 
 	/* move x1 to x0 and call setcontext */
 	mov	x0, x1
-	bl	___setcontext
+	bl	_setcontext
 
 	/* hmm, we came back here try to return */
 	mov	x30, x28

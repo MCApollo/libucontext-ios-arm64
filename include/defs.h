@@ -1,6 +1,8 @@
 #ifndef __ARCH_AARCH64_DEFS_H
 #define __ARCH_AARCH64_DEFS_H
 
+// #define WEAK		1
+
 #define REGSZ		8
 #define R0_OFFSET	184
 #define SP_OFFSET	432

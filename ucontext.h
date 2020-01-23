@@ -7,10 +7,11 @@
 #include <sys/_types/_sigset_t.h>
 #include <sys/_types/_sigaltstack.h>
 #else
+/* Hack to use ours instead of Apple's */
 #define _STRUCT_UCONTEXT 1
-#define __ARM_MCONTEXT_H_ 1
 #define _SIGSET_T 1
 #define _STRUCT_SIGALTSTACK struct sigaltstack
+#define __ARM_MCONTEXT_H_ 1
 #include <sys/cdefs.h>
 typedef struct
   {
