@@ -49,8 +49,11 @@ ___getcontext:
 	mov	x0, #0
 	ret
 
-
-.weak getcontext;
+#ifndef WEAK
+.globl _getcontext;
+#else
+.weak_definition _getcontext;
+#endif
 _getcontext = ___getcontext;
 
 
@@ -84,7 +87,11 @@ ___setcontext:
 	br	x16
 
 
-.weak setcontext;
+#ifndef WEAK 
+.globl _setcontext;
+#else
+.weak_definition _setcontext;
+#endif
 _setcontext = ___setcontext;
 
 
@@ -141,6 +148,9 @@ ___swapcontext:
 	mov	x30, x28
 	ret
 
-
-.weak swapcontext;
+#ifndef WEAK
+.globl _swapcontext;
+#else
+.weak_definition swapcontext;
+#endif
 _swapcontext = ___swapcontext;

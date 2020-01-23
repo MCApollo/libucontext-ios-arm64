@@ -1,34 +1,47 @@
 #ifndef UCONTEXT_H
 #define UCONTEXT_H	1
 
+#ifndef _GCC /* Apple stack_t, sigset_t */
 #include <sys/_types/_sigset_t.h>
 #include <sys/_types/_sigaltstack.h>
-
-# define __ctx(fld) fld
+#else
+#include <sys/cdefs.h>
 typedef struct
   {
-    unsigned long long int __ctx(fault_address);
-    unsigned long long int __ctx(regs)[31];
-    unsigned long long int __ctx(sp);
-    unsigned long long int __ctx(pc);
-    unsigned long long int __ctx(pstate);
-    /* This field contains extension records for additional processor
-       state such as the FP/SIMD state.  It has to match the definition
-       of the corresponding field in the sigcontext struct, see the
-       arch/arm64/include/uapi/asm/sigcontext.h linux header for details.  */
+    void *ss_sp;
+    size_t ss_size;
+    int ss_flags;
+  } stack_t;
+
+typedef unsigned long int __sigset_t;
+typedef __sigset_t sigset_t;
+typedef unsigned long int __sigset_t;
+#endif
+
+extern int getcontext (ucontext_t *__ucp);
+extern int setcontext (const ucontext_t *__ucp);
+extern int swapcontext (ucontext_t *__restrict __oucp,
+			const ucontext_t *__restrict __ucp);
+extern void makecontext (ucontext_t *__ucp, void (*__func) (void),
+			 int __argc, ...);
+
+typedef struct
+  {
+    unsigned long long int fault_address;
+    unsigned long long int regs[31];
+    unsigned long long int sp;
+    unsigned long long int pc;
+    unsigned long long int pstate;
     unsigned char __reserved[4096] __attribute__ ((__aligned__ (16)));
   } mcontext_t;
 
-/* Userlevel context.  */
 typedef struct ucontext_t
   {
-    unsigned long __ctx(uc_flags);
+    unsigned long uc_flags;
     struct ucontext_t *uc_link;
     stack_t uc_stack;
     sigset_t uc_sigmask;
     mcontext_t uc_mcontext;
   } ucontext_t;
 
-#undef __ctx
-
-#endif /* sys/ucontext.h */
+#endif
