@@ -4,10 +4,10 @@
 // #define WEAK		1
 
 #define REGSZ		8
-#define R0_OFFSET	184
-#define SP_OFFSET	432
-#define PC_OFFSET	440
-#define PSTATE_OFFSET	448
+#define R0_OFFSET	56
+#define SP_OFFSET	304
+#define PC_OFFSET	312
+#define PSTATE_OFFSET	320
 
 #ifndef FPSIMD_MAGIC
 # define FPSIMD_MAGIC	0x46508001

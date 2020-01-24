@@ -1,0 +1,21 @@
+#include <stddef.h>
+#include <stdio.h>
+#include <ucontext.h>
+
+#define ucontext(member)	offsetof (ucontext_t, member)
+#define stack(member)		ucontext (uc_stack.member)
+#define mcontext(member)	ucontext (uc_mcontext.member)
+
+#define R0_OFFSET	mcontext (regs)
+#define SP_OFFSET	mcontext (sp)
+#define PC_OFFSET	mcontext (pc)
+#define PSTATE_OFFSET	mcontext (pstate)
+
+int main(){
+printf("%lu\n", R0_OFFSET);
+printf("%lu\n", SP_OFFSET);
+printf("%lu\n", PC_OFFSET);
+printf("%lu\n", PSTATE_OFFSET);
+
+return 0;
+}

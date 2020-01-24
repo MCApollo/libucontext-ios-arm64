@@ -26,12 +26,10 @@ typedef __sigset_t sigset_t;
 
 typedef struct
   {
-    unsigned long long int fault_address;
-    unsigned long long int regs[31];
-    unsigned long long int sp;
-    unsigned long long int pc;
-    unsigned long long int pstate;
-    unsigned char __reserved[4096] __attribute__ ((__aligned__ (16)));
+    unsigned long fault_address;
+    unsigned long regs[31];
+    unsigned long sp, pc, pstate;
+    long double __reserved[256];
   } mcontext_t;
 
 typedef struct ucontext_t
